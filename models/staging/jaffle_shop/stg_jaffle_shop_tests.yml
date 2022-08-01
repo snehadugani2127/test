@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: staged customer data from jaffle shop app.
+    columns:
+    - name: customer_id
+      description: This is a primery key.
+      tests:
+        - unique
+        - not_null
+  - name: stg_orders
+    description: staged orders data from jaffle shop app.
+    columns:
+      - name: order_id
+        description: This is a primary key.
+        tests:
+        - unique
+        - not_null
+      - name: status
+        description: "{{doc('order_status')}}"
+        tests:
+        - unique
+        - not_null
+        - accepted_values:
+             values:
+                - completed
+                - returned
+                - placed
+                - shipped
+                - return_pending
+      - name: customer_id
+        description: This is a primery key.
+        tests:
+        - relationships:
+             to: ref('stg_customers')
+             field: customer_id
+              
